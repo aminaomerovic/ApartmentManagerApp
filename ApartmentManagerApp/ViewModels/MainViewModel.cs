@@ -207,26 +207,26 @@ namespace ApartmentManagementApp.ViewModels
             // Validation
             if (string.IsNullOrWhiteSpace(GuestFirstName))
             {
-                MessageBox.Show("Ime je obavezno.", "Greška u Validaciji", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Ime je obavezno.", "Greška u validaciji", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
             if (string.IsNullOrWhiteSpace(GuestLastName))
             {
-                MessageBox.Show("Prezime je obavezno.", "Greška u Validaciji", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Prezime je obavezno.", "Greška u validaciji", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
             if (!string.IsNullOrWhiteSpace(GuestEmail) && !GuestEmail.Contains("@"))
             {
-                MessageBox.Show("Molimo unesite validnu email adresu.", "Greška u Validaciji", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Molimo unesite validnu email adresu.", "Greška u validaciji", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
             await _reservationService.AddGuestAsync(GuestFirstName, GuestLastName, GuestEmail ?? string.Empty, GuestPhone ?? string.Empty);
             ClearGuestForm();
             await LoadData();
-            MessageBox.Show("Gost uspešno dodat!", "Uspeh", MessageBoxButton.OK, MessageBoxImage.Information);
+            MessageBox.Show("Gost je uspešno dodat!", "Uspeh", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private async Task UpdateGuest()
@@ -241,7 +241,7 @@ namespace ApartmentManagementApp.ViewModels
         {
             if (SelectedGuest == null) return;
 
-            var result = MessageBox.Show($"Delete guest {SelectedGuest.GetFullName()}?", "Confirm Delete", MessageBoxButton.YesNo);
+            var result = MessageBox.Show($"Obrisati gosta {SelectedGuest.GetFullName()}?", "Potvrda brisanja", MessageBoxButton.YesNo);
             if (result == MessageBoxResult.Yes)
             {
                 await _reservationService.DeleteGuestAsync(SelectedGuest.GuestId);
@@ -263,32 +263,32 @@ namespace ApartmentManagementApp.ViewModels
             // Validation
             if (string.IsNullOrWhiteSpace(ApartmentName))
             {
-                MessageBox.Show("Apartment name is required.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Naziv apartmana je obavezan.", "Greška u validaciji", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
             if (ApartmentCapacity <= 0)
             {
-                MessageBox.Show("Capacity must be greater than 0.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Kapacitet mora biti veći od 0.", "Greška u validaciji", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
             if (string.IsNullOrWhiteSpace(ApartmentLocation))
             {
-                MessageBox.Show("Location is required.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Lokacija je obavezna.", "Greška u validaciji", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
             if (ApartmentPrice <= 0)
             {
-                MessageBox.Show("Price must be greater than 0.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Cena mora biti veća od 0.", "Greška u validaciji", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
             await _reservationService.AddApartmentAsync(ApartmentName, ApartmentCapacity, ApartmentLocation, ApartmentDescription ?? string.Empty, ApartmentPrice);
             ClearApartmentForm();
             await LoadData();
-            MessageBox.Show("Apartment added successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+            MessageBox.Show("Apartman je uspešno dodat!", "Uspeh", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private async Task UpdateApartment()
@@ -303,7 +303,7 @@ namespace ApartmentManagementApp.ViewModels
         {
             if (SelectedApartment == null) return;
 
-            var result = MessageBox.Show($"Delete apartment {SelectedApartment.Name}?", "Confirm Delete", MessageBoxButton.YesNo);
+            var result = MessageBox.Show($"Obrisati apartman {SelectedApartment.Name}?", "Potvrda brisanja", MessageBoxButton.YesNo);
             if (result == MessageBoxResult.Yes)
             {
                 await _reservationService.DeleteApartmentAsync(SelectedApartment.ApartmentId);
@@ -326,25 +326,25 @@ namespace ApartmentManagementApp.ViewModels
             // Validation
             if (SelectedGuest == null)
             {
-                MessageBox.Show("Please select a guest.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Molimo izaberite gosta.", "Greška u validaciji", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
             if (SelectedApartment == null)
             {
-                MessageBox.Show("Please select an apartment.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Molimo izaberite apartman.", "Greška u validaciji", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
             if (CheckOutDate <= CheckInDate)
             {
-                MessageBox.Show("Check-out date must be after check-in date.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Datum odjave mora biti posle datuma prijave.", "Greška u validaciji", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
             if (CheckInDate < DateTime.Today)
             {
-                MessageBox.Show("Check-in date cannot be in the past.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Datum prijave ne može biti u prošlosti.", "Greška u validaciji", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
@@ -352,15 +352,15 @@ namespace ApartmentManagementApp.ViewModels
             {
                 await _reservationService.CreateReservationAsync(SelectedGuest.GuestId, SelectedApartment.ApartmentId, CheckInDate, CheckOutDate);
                 await LoadData();
-                MessageBox.Show("Reservation created successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("Rezervacija je uspešno kreirana!", "Uspeh", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             catch (InvalidOperationException ex)
             {
-                MessageBox.Show(ex.Message, "Reservation Conflict", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(ex.Message, "Sukob rezervacije", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"Došlo je do greške: {ex.Message}", "Greška", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -368,7 +368,7 @@ namespace ApartmentManagementApp.ViewModels
         {
             if (SelectedReservation == null) return;
 
-            var result = MessageBox.Show("Delete this reservation?", "Confirm Delete", MessageBoxButton.YesNo);
+            var result = MessageBox.Show("Obrisati ovu rezervaciju?", "Potvrda brisanja", MessageBoxButton.YesNo);
             if (result == MessageBoxResult.Yes)
             {
                 await _reservationService.DeleteReservationAsync(SelectedReservation.ReservationId);
@@ -379,12 +379,12 @@ namespace ApartmentManagementApp.ViewModels
         // Event handlers
         private void OnGuestAdded(object sender, GuestAddedEventArgs e)
         {
-            MessageBox.Show($"New guest added: {e.Guest.GetFullName()}", "Guest Added");
+            MessageBox.Show($"Dodat je novi gost: {e.Guest.GetFullName()}", "Gost dodat");
         }
 
         private void OnReservationCreated(object sender, ReservationCreatedEventArgs e)
         {
-            MessageBox.Show($"Reservation created for {e.Reservation.Guest?.GetFullName()}", "Reservation Created");
+            MessageBox.Show($"Kreirana je rezervacija za {e.Reservation.Guest?.GetFullName()}", "Rezervacija kreirana");
         }
 
         // Search reservations
@@ -401,11 +401,11 @@ namespace ApartmentManagementApp.ViewModels
                         Reservations.Add(reservation);
                 });
 
-                MessageBox.Show($"Found {results.Count} reservation(s)", "Search Results");
+                MessageBox.Show($"Pronađeno rezervacija: {results.Count}", "Rezultati pretrage");
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Search error: {ex.Message}", "Error");
+                MessageBox.Show($"Greška pri pretrazi: {ex.Message}", "Greška");
             }
         }
     }
