@@ -112,7 +112,7 @@ namespace ApartmentManagementApp.Data
 
         public async Task<Reservation> CreateReservationAsync(int guestId, int apartmentId, DateTime checkInDate, DateTime checkOutDate)
         {
-            // LINQ: Check for overlapping reservations
+            // LINQ: overlapping reservations
             var hasOverlap = _context.Reservations
                 .Any(r => r.ApartmentId == apartmentId &&
                           r.CheckInDate < checkOutDate &&
